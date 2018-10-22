@@ -62,6 +62,7 @@ namespace GEX {
 
 
 	PlayerControl::PlayerControl()
+		: currentMissionStatus_(MissionStatus::MissionRunning)
 	{
 		//set up bindings
 		keyBindings_[sf::Keyboard::Right] = Action::MoveRight;
@@ -115,6 +116,16 @@ namespace GEX {
 			
 		}
 	}
+	void PlayerControl::setMissionStatus(MissionStatus status)
+	{
+		currentMissionStatus_ = status;
+	}
+
+	MissionStatus PlayerControl::getMissionStatus() const
+	{
+		return currentMissionStatus_;
+	}
+
 	void PlayerControl::initializeActions()
 	{
 		const float playerSpeed = 200.f;

@@ -28,22 +28,23 @@
 */
 
 #pragma once
-
+#include "State.h"
 
 namespace GEX {
-
-	enum class StateID
+	class GameOverState : public GEX::State
 	{
-		Title,
-		Menu,
-		Game,
-		Pause,
-		Gex,
-		GameOver,
-		None
+	public:
+								GameOverState(GEX::StateStack& stack, Context context);
+		void					draw() override;
+		//not updating game
+		bool					update(sf::Time dt) override;
+
+		//handle key press events
+		bool					handleEvent(const sf::Event& event) override;
+
+	private:
+		sf::Text				gameOvertext_;
+		sf::Time				elapsedTime_;
 	};
-
-
-
 
 }

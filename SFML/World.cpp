@@ -59,6 +59,7 @@ namespace GEX {
 		worldView_.move(0.f, scrollSpeed_ * dt.asSeconds());
 		playerAircraft_->setVelocity(0.f, 0.f);
 
+		destroyOutOfViewEntities();
 		guideMissiles();
 
 		//run all commands in command queue
@@ -67,6 +68,8 @@ namespace GEX {
 			sceneGraph_.onCommand(commandQueue_.pop(), dt);
 		}
 		handleCollisions();
+		sceneGraph_.removeWrecks();
+
 		adaptPlayerVelocity();
 		sceneGraph_.update(dt, commands);
 		adaptPlayerPosition();
@@ -108,6 +111,29 @@ namespace GEX {
 	CommandQueue& World::getCommandQueue()
 	{
 		return commandQueue_;
+	}
+
+	bool World::hasAlivePlayer() const
+	{
+		return !playerAircraft_->isMarkedForRemoval();
+	}
+
+	bool World::hasPlayerReachedEnd() const
+	{
+		return !worldBounds_.contains(playerAircraft_->getPosition());
+	}
+
+	void World::destroyOutOfViewEntities()
+	{
+		Command command;
+		command.category = Category::Type::Projectile | Category::Type::EnemyAircraft;
+		command.action = derivedAction<Entity>([this](Entity& e, sf::Time dt) 
+		{
+			if (!getBattlefieldBounds().intersects(e.getBoundingBox()))
+				e.remove();
+		});
+
+		commandQueue_.push(command);
 	}
 
 	void World::loadTextures()

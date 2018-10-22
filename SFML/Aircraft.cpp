@@ -56,6 +56,7 @@ namespace GEX {
 		, fireCommand_()
 		, launchMissileCommand_()
 		, isLaunchingMissile_(false)
+		, isMarkedForRemoval_(false)
 	{
 
 
@@ -70,6 +71,12 @@ namespace GEX {
 		launchMissileCommand_.action = [this, &textures](SceneNode& node, sf::Time dt)
 		{
 			createProjectile(node, Projectile::Type::Missile, 0.f, 0.5f, textures);
+		};
+
+		dropPickupCommand_.category = Category::AirSceneLayer;
+		dropPickupCommand_.action = [this, &textures](SceneNode& node, sf::Time dt)
+		{
+			createPickup(node, textures);
 		};
 
 
@@ -136,12 +143,25 @@ namespace GEX {
 	{
 		return getWorldTransform().transformRect(sprite_.getGlobalBounds());
 	}
+	bool Aircraft::isMarkedForRemoval() const
+	{
+		return isMarkedForRemoval_;
+	}
 	void Aircraft::updateCurrent(sf::Time dt, CommandQueue& commands)
 	{
+		checkProjectileLaunch(dt, commands);
+		
+		
+		if (isDestroyed() && !isAllied())
+		{
+			checkPickupDrop(commands);
+			isMarkedForRemoval_ = true;
+			return;
+		}
 		updateMovementPattern(dt);
 		Entity::updateCurrent(dt, commands);
 		updateText();
-		checkProjectileLaunch(dt, commands);
+		
 	}
 	void Aircraft::updateMovementPattern(sf::Time dt)
 	{
@@ -164,6 +184,22 @@ namespace GEX {
 
 		}
 	}
+	void Aircraft::checkPickupDrop(CommandQueue & commands)
+	{
+		if (!isAllied() /*&& randomInt(3) == 0*/)
+			commands.push(dropPickupCommand_);
+	}
+
+	void Aircraft::createPickup(SceneNode & node, const TextureManager & textures) const
+	{
+		auto type = static_cast<Pickup::Type>(0);/*randomInt(static_cast<int>(Pickup::Type::count))*/
+
+		std::unique_ptr<Pickup> pickup(new Pickup(type, textures));
+		pickup->setPosition(getWorldPosition());
+		pickup->setVelocity(0.f, 0.f);
+		node.attachChild(std::move(pickup));
+	}
+
 	float Aircraft::getMaxSpeed() const
 	{
 		return TABLE.at(type_).speed;

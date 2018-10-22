@@ -91,6 +91,11 @@ namespace GEX {
 		return (hitPoints_ <= 0);
 	}
 
+	void Entity::remove()
+	{
+		destroy();
+	}
+
 	void Entity::updateCurrent(sf::Time dt, CommandQueue& comands)
 	{
 		move(getVelocity() * dt.asSeconds());

@@ -53,8 +53,11 @@ namespace GEX
 		void						adaptPlayerPosition();	//adapt player's position to within the screen bounds
 		void						draw();
 
-
 		CommandQueue&				getCommandQueue();	//returns command queue
+
+		bool						hasAlivePlayer() const;
+		bool						hasPlayerReachedEnd() const;
+		void						destroyOutOfViewEntities();
 
 	private:
 		void						loadTextures();  //load textures 
