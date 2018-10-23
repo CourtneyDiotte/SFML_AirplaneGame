@@ -47,7 +47,17 @@ bool GameState::update(sf::Time dt)
 {
 	auto& commands = world_.getCommandQueue();
 	world_.update(dt, commands);
-	
+
+	if (!world_.hasAlivePlayer())
+	{
+		player_.setMissionStatus(GEX::MissionStatus::MissionFailure);
+		requestStackPush(GEX::StateID::GameOver);
+	}
+	else if (world_.hasPlayerReachedEnd())
+	{
+		player_.setMissionStatus(GEX::MissionStatus::MissionSuccess);
+		requestStackPush(GEX::StateID::GameOver);
+	}
 
 	player_.handleRealtimeInput(commands);
 	return true;
