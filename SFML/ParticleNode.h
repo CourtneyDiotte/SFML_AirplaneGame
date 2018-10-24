@@ -26,27 +26,38 @@
 * I certify that this work is solely my own and complies with
 * NBCC Academic Integrity Policy (policy 1111)
 */
+
 #pragma once
+#include "SceneNode.h"
+#include "Particle.h"
+#include <deque>
+#include <SFML/Graphics/VertexArray.hpp>
+#include "TextureManager.h"
 
-
-namespace Category
-{
-	//enumeration of categories
-	enum Type
+namespace GEX {
+	class ParticleNode : public SceneNode
 	{
-		None = 0,
-		Scene = 1 << 0,	//1 with no bit shift
-		PlayerAircraft = 1 << 1,	//1 with single bit shift
-		AlliedAircraft = 1 << 2,	//1 with 2 bit shifts
-		EnemyAircraft = 1 << 3,	//1 with 3 bit shifts
-		EnemyProjectile = 1 << 4,
-		AlliedProjectile = 1 << 5,
-		AirSceneLayer = 1 << 6,
-		Pickup = 1 << 7,
-		ParticleSystem = 1 << 8,
-		Aircraft = PlayerAircraft | AlliedAircraft | EnemyAircraft,
-		Projectile = EnemyProjectile | AlliedProjectile,
-		
+	public:
+		ParticleNode(Particle::Type type, const GEX::TextureManager& textures);
 
+		void					addParticle(sf::Vector2f position);
+		Particle::Type			getParticleType() const;
+		unsigned int			getCategory() const override;
+
+	private:
+		void					updateCurrent(sf::Time dt, CommandQueue& commands) override;
+		void					drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+
+		void					addVertex(float worldX, float worldY, float texCoordU, float texCoordB, const sf::Color color) const;
+		void					computeVerticies() const;
+
+	private:
+		std::deque<Particle>    particles_;
+		const sf::Texture&		texture_;
+		Particle::Type			type_;
+		mutable sf::VertexArray vertexArray_;
+		mutable bool			needsVertexUpdate_;
 	};
+
 }

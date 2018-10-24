@@ -34,6 +34,7 @@
 #include <map>
 #include "Projectile.h"
 #include "Pickup.h"
+#include "Particle.h"
 
 namespace GEX {
 	//compilation unit 
@@ -85,5 +86,5 @@ namespace GEX {
 	std::map<Pickup::Type, PickupData>			initializePickupData();
 	std::map<AircraftType, AircraftData>		initializeAircraftData();
 	std::map<Projectile::Type, ProjectileData>	initializeProjectileData();
-	//std::map<Particle::Type, ParticleData>		initializeParticletData();
+	std::map<Particle::Type, ParticleData>		initializeParticleData();
 }

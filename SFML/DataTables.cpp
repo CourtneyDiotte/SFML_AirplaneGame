@@ -115,17 +115,17 @@ namespace GEX {
 		return data;
 	}
 
-	//std::map<Particle::Type, ParticleData> initializeParticletData()
-	//{
-	//	std::map<Particle::Type, ParticleData> data;
+	std::map<Particle::Type, ParticleData> initializeParticleData()
+	{
+		std::map<Particle::Type, ParticleData> data;
 
-	//	data[Particle::Type::Propellant].color = sf::Color(255, 255, 50);
-	//	data[Particle::Type::Propellant].lifetime = sf::seconds(0.6f);
+		data[Particle::Type::Propellant].color = sf::Color(255, 255, 50);
+		data[Particle::Type::Propellant].lifetime = sf::seconds(0.6f);
 
-	//	data[Particle::Type::Smoke].color = sf::Color(50, 50, 50);
-	//	data[Particle::Type::Smoke].lifetime = sf::seconds(4.f);
+		data[Particle::Type::Smoke].color = sf::Color(50, 50, 50);
+		data[Particle::Type::Smoke].lifetime = sf::seconds(4.f);
 
 
-	//	return data;
-	//}
+		return data;
+	}
 }
