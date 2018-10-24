@@ -52,31 +52,38 @@ namespace GEX {
 
 	struct AircraftData
 	{
-		int									hitPoints;
-		float								speed;
-		TextureID							texture;
-		sf::Time							fireInterval; //how frequently bullets can fire
+		int										hitPoints;
+		float									speed;
+		TextureID								texture;
+		sf::Time								fireInterval; //how frequently bullets can fire
+		sf::IntRect								textureRect;
 
-		std::vector<Direction>				directions;
+		std::vector<Direction>					directions;
 	};
 
 	struct ProjectileData
 	{
-		int									damage;
-		float								speed;
-		TextureID							texture;
+		int										damage;
+		float									speed;
+		TextureID								texture;
+		sf::IntRect								textureRect;
 	};
 
 	struct PickupData
 	{
-		std::function<void(Aircraft&)>		action;
-		TextureID							texture;
+		std::function<void(Aircraft&)>			action;
+		TextureID								texture;
+		sf::IntRect								textureRect;
 	};
 
-	std::map<Pickup::Type, PickupData>		initializePickupData();
+	struct ParticleData
+	{
+		sf::Color								color;
+		sf::Time								lifetime;
+	};
 
-	std::map<AircraftType, AircraftData>	initializeAircraftData();
-
+	std::map<Pickup::Type, PickupData>			initializePickupData();
+	std::map<AircraftType, AircraftData>		initializeAircraftData();
 	std::map<Projectile::Type, ProjectileData>	initializeProjectileData();
-
+	//std::map<Particle::Type, ParticleData>		initializeParticletData();
 }

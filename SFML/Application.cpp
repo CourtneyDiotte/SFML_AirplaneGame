@@ -40,7 +40,7 @@
 const sf::Time Application::timePerFrame = sf::seconds(1.0f / 60.0f);	//seconds per frame for 60 fps
 
 Application::Application()
-	: window_(sf::VideoMode(640, 480), "Killer Planes")
+	: window_(sf::VideoMode(1024, 768), "Killer Planes")
 	, player_()
 	, textures_()
 	, stateStack_(GEX::State::Context(window_, textures_, player_))

@@ -43,7 +43,12 @@ namespace GEX {
 		HealthRefill,
 		MissileRefill,
 		FireSpread,
-		FireRate
+		FireRate,
+		Entities,
+		Jungle,
+		Explosion,
+		Particle,
+		FinishLine,
 	};
 
 

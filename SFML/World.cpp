@@ -138,16 +138,17 @@ namespace GEX {
 
 	void World::loadTextures()
 	{
-		textures_.load(TextureID::Eagle, "Media/Textures/Eagle.png");
-		textures_.load(TextureID::Raptor, "Media/Textures/Raptor.png");
-		textures_.load(TextureID::Avenger, "Media/Textures/Avenger.png");
-		textures_.load(TextureID::Landscape, "Media/Textures/Desert.png");
-		textures_.load(TextureID::Bullet, "Media/Textures/Bullet.png");
-		textures_.load(TextureID::Missile, "Media/Textures/Missile.png");
-		textures_.load(TextureID::HealthRefill, "Media/Textures/HealthRefill.png");
-		textures_.load(TextureID::MissileRefill, "Media/Textures/MissileRefill.png");
-		textures_.load(TextureID::FireRate, "Media/Textures/FireRate.png");
-		textures_.load(TextureID::FireSpread, "Media/Textures/FireSpread.png");
+		//textures_.load(TextureID::Eagle, "Media/Textures/Eagle.png");
+		//textures_.load(TextureID::Raptor, "Media/Textures/Raptor.png");
+		//textures_.load(TextureID::Avenger, "Media/Textures/Avenger.png");
+		textures_.load(TextureID::Jungle, "Media/Textures/JungleBig.png");
+		//textures_.load(TextureID::Bullet, "Media/Textures/Bullet.png");
+		//textures_.load(TextureID::Missile, "Media/Textures/Missile.png");
+		//textures_.load(TextureID::HealthRefill, "Media/Textures/HealthRefill.png");
+		//textures_.load(TextureID::MissileRefill, "Media/Textures/MissileRefill.png");
+		//textures_.load(TextureID::FireRate, "Media/Textures/FireRate.png");
+		//textures_.load(TextureID::FireSpread, "Media/Textures/FireSpread.png");
+		textures_.load(TextureID::Entities, "Media/Textures/Entities.png");
 	}
 
 	void World::buildScene()
@@ -162,7 +163,7 @@ namespace GEX {
 		}
 
 		//background
-		sf::Texture& texture = textures_.get(TextureID::Landscape);
+		sf::Texture& texture = textures_.get(TextureID::Jungle);
 		sf::IntRect textureRect(worldBounds_);
 		texture.setRepeated(true);
 
@@ -221,7 +222,24 @@ namespace GEX {
 		addEnemy(AircraftType::Avenger, 70.f, 800.f);
 
 		addEnemy(AircraftType::Avenger, -120.f, 850.f);
-		addEnemy(AircraftType::Avenger, 120.f, 90.f);
+		addEnemy(AircraftType::Avenger, 120.f, 850.f);
+
+		addEnemy(AircraftType::Raptor, -250.f, 900.f);
+		addEnemy(AircraftType::Raptor, 0.f, 900.f);
+		addEnemy(AircraftType::Raptor, +250.f, 900.f);
+
+		addEnemy(AircraftType::Raptor, -250.f, 950.f);
+		addEnemy(AircraftType::Raptor, 0.f, 9500.f);
+		addEnemy(AircraftType::Raptor, +250.f, 1000.f);
+
+		addEnemy(AircraftType::Avenger, -70.f, 1050.f);
+		addEnemy(AircraftType::Avenger, 70.f, 1100.f);
+
+		addEnemy(AircraftType::Avenger, -70.f, 1200.f);
+		addEnemy(AircraftType::Avenger, 70.f, 1250.f);
+
+		addEnemy(AircraftType::Avenger, -120.f, 1250.f);
+		addEnemy(AircraftType::Avenger, 120.f, 1300.f);
 
 		std::sort(enemySpawnPoints_.begin(), enemySpawnPoints_.end(), [](SpawnPoint lhs, SpawnPoint rhs) 
 		{
