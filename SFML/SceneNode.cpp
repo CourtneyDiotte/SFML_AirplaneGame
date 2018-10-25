@@ -80,10 +80,8 @@ namespace GEX {
 		for (const SceneNode* node = this; node != nullptr; node = node->parent_)
 		{
 			transform = node->getTransform() * transform; 
-
-
-			return transform;
 		}
+		return transform;
 	}
 
 	sf::FloatRect SceneNode::getBoundingBox() const

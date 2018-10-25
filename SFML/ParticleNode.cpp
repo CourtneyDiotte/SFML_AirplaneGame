@@ -76,7 +76,7 @@ namespace GEX {
 			particles_.pop_front();
 		}
 		//take dt off particle lifetimes
-		for (auto& p : particles_)
+		for (Particle& p : particles_)
 		{
 			p.lifetime -= dt;
 		}
@@ -113,6 +113,7 @@ namespace GEX {
 	{
 		sf::Vector2f size(texture_.getSize());
 		sf::Vector2f half = size / 2.f;
+		vertexArray_.clear();
 
 		// Refill vertex array
 		for (const Particle& p : particles_)

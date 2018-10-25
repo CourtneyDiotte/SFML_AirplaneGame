@@ -30,6 +30,7 @@
 #include "Aircraft.h"
 #include "Pickup.h"
 #include "World.h"
+#include "ParticleNode.h"
 
 namespace GEX {
 
@@ -141,14 +142,17 @@ namespace GEX {
 		//textures_.load(TextureID::Eagle, "Media/Textures/Eagle.png");
 		//textures_.load(TextureID::Raptor, "Media/Textures/Raptor.png");
 		//textures_.load(TextureID::Avenger, "Media/Textures/Avenger.png");
-		textures_.load(TextureID::Jungle, "Media/Textures/JungleBig.png");
 		//textures_.load(TextureID::Bullet, "Media/Textures/Bullet.png");
 		//textures_.load(TextureID::Missile, "Media/Textures/Missile.png");
 		//textures_.load(TextureID::HealthRefill, "Media/Textures/HealthRefill.png");
 		//textures_.load(TextureID::MissileRefill, "Media/Textures/MissileRefill.png");
 		//textures_.load(TextureID::FireRate, "Media/Textures/FireRate.png");
 		//textures_.load(TextureID::FireSpread, "Media/Textures/FireSpread.png");
+		textures_.load(TextureID::Jungle, "Media/Textures/JungleBig.png");
 		textures_.load(TextureID::Entities, "Media/Textures/Entities.png");
+		textures_.load(TextureID::Particle, "Media/Textures/Particle.png");
+		textures_.load(TextureID::Explosion, "Media/Textures/Explosion.png");
+		textures_.load(TextureID::FinishLine, "Media/Textures/FinishLine.png");
 	}
 
 	void World::buildScene()
@@ -156,11 +160,18 @@ namespace GEX {
 		//initialize layers
 		for (int i = 0; i < LayerCount; ++i)
 		{
-			auto category = (i == Air) ? Category::Type::AirSceneLayer : Category::Type::None;
+			auto category = (i == UpperAir) ? Category::Type::AirSceneLayer : Category::Type::None;
 			SceneNode::Ptr layer(new SceneNode(category));
 			sceneLayers_.push_back(layer.get()); //raw pointers
 			sceneGraph_.attachChild(std::move(layer));
 		}
+
+		//Particle Systems
+		std::unique_ptr<ParticleNode> smoke(new ParticleNode(Particle::Type::Smoke, textures_));
+		sceneLayers_[LowerAir]->attachChild(std::move(smoke));
+
+		std::unique_ptr<ParticleNode> fire(new ParticleNode(Particle::Type::Propellant, textures_));
+		sceneLayers_[LowerAir]->attachChild(std::move(fire));
 
 		//background
 		sf::Texture& texture = textures_.get(TextureID::Jungle);
@@ -177,7 +188,7 @@ namespace GEX {
 		leader->setPosition(spawnPosition_);
 		leader->setVelocity(50.f, scrollSpeed_);
 		playerAircraft_ = leader.get();
-		sceneLayers_[Air]->attachChild(std::move(leader));
+		sceneLayers_[UpperAir]->attachChild(std::move(leader));
 
 		//Add enemy aircrafts
 		addEnemies();
@@ -263,7 +274,7 @@ namespace GEX {
 
 			enemy->setPosition(spawnPoint.x, spawnPoint.y);
 			enemy->setRotation(180.f);
-			sceneLayers_[Air]->attachChild(std::move(enemy));
+			sceneLayers_[UpperAir]->attachChild(std::move(enemy));
 
 			enemySpawnPoints_.pop_back();
 		}
