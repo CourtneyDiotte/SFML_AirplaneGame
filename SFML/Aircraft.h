@@ -67,6 +67,7 @@ namespace GEX{
 		void					collectMissiles(unsigned int count);
 		sf::FloatRect			getBoundingBox() const override;
 		bool					isMarkedForRemoval() const override;
+		void					remove() override;
 		
 
 	protected:
@@ -89,6 +90,8 @@ namespace GEX{
 		AircraftType			type_;
 		TextNode*				healthDisplay_;
 		TextNode*				missileDisplay_;
+		Animation				explosion_;
+		bool					showExplosion_;
 
 		float					travelDistance_;
 		std::size_t				directionIndex_;
@@ -103,6 +106,7 @@ namespace GEX{
 		Command					launchMissileCommand_;
 		Command					dropPickupCommand_;
 		int						missileAmmo_;
+		bool					spawnPickup_;
 	};
 }
 
