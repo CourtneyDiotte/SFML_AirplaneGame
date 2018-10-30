@@ -68,6 +68,7 @@ namespace GEX{
 		sf::FloatRect			getBoundingBox() const override;
 		bool					isMarkedForRemoval() const override;
 		void					remove() override;
+		void					updateRollAnimation();
 		
 
 	protected:
@@ -107,6 +108,7 @@ namespace GEX{
 		Command					dropPickupCommand_;
 		int						missileAmmo_;
 		bool					spawnPickup_;
+		bool					isRollAnimation_;
 	};
 }
 

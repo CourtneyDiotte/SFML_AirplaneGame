@@ -60,6 +60,7 @@ namespace GEX {
 		, isLaunchingMissile_(false)
 		, isMarkedForRemoval_(false)
 		, spawnPickup_(false)
+		, isRollAnimation_(false)
 	{
 		explosion_.setFrameSize(sf::Vector2f(256, 256));
 		explosion_.setNumFrames(16);
@@ -163,6 +164,26 @@ namespace GEX {
 		Entity::remove();
 		showExplosion_ = false;
 	}
+	void Aircraft::updateRollAnimation()
+	{
+		if (TABLE.at(type_).hasRollAnimation)
+		{
+			sf::IntRect textureRect = TABLE.at(type_).textureRect;
+
+			//Roll left
+			if (getVelocity().x < 0.f)
+			{
+				textureRect.left += textureRect.width;
+			}
+			//Roll right
+			else if (getVelocity().x > 0.f)
+			{
+				textureRect.left += (2 * textureRect.width);
+			}
+
+			sprite_.setTextureRect(textureRect);
+		}
+	}
 	void Aircraft::updateCurrent(sf::Time dt, CommandQueue& commands)
 	{
 		checkProjectileLaunch(dt, commands);
@@ -176,6 +197,7 @@ namespace GEX {
 		}
 		updateMovementPattern(dt);
 		Entity::updateCurrent(dt, commands);
+		updateRollAnimation();
 		updateText();
 		
 	}

@@ -58,6 +58,7 @@ namespace GEX {
 		TextureID								texture;
 		sf::Time								fireInterval; //how frequently bullets can fire
 		sf::IntRect								textureRect;
+		bool									hasRollAnimation;
 
 		std::vector<Direction>					directions;
 	};
