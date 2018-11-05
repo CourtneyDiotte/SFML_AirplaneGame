@@ -31,13 +31,16 @@
 #include "Pickup.h"
 #include "World.h"
 #include "ParticleNode.h"
+#include <SFML/Graphics/RenderTarget.hpp>
+#include "PostEffect.h"
+#include "BloomEffect.h"
 
 namespace GEX {
 
 
-	World::World(sf::RenderWindow & window)
-		: window_(window)
-		, worldView_(window.getDefaultView())
+	World::World(sf::RenderTarget & outputTarget)
+		: target_(outputTarget)
+		, worldView_(target_.getDefaultView())
 		, textures_()
 		, sceneGraph_()
 		, sceneLayers_()
@@ -46,7 +49,9 @@ namespace GEX {
 			worldBounds_.height - worldView_.getSize().y / 2.f)
 		, scrollSpeed_(-50.f)
 		, playerAircraft_(nullptr)
+		, bloomEffect_()
 	{
+		sceneTexture_.create(target_.getSize().x, target_.getSize().y);
 		loadTextures();
 		buildScene();
 
@@ -105,8 +110,19 @@ namespace GEX {
 
 	void World::draw()
 	{
-		window_.setView(worldView_);
-		window_.draw(sceneGraph_);
+		if (PostEffect::isSupported())
+		{
+			sceneTexture_.clear();
+			sceneTexture_.setView(worldView_);
+			sceneTexture_.draw(sceneGraph_);
+			sceneTexture_.display();
+			bloomEffect_.apply(sceneTexture_, target_);
+		}
+		else
+		{
+			target_.setView(worldView_);
+			target_.draw(sceneGraph_);
+		}
 	}
 
 	CommandQueue& World::getCommandQueue()
@@ -182,6 +198,17 @@ namespace GEX {
 			new SpriteNode(texture, textureRect));
 		backgroundSprite->setPosition(worldBounds_.left, worldBounds_.top);
 		sceneLayers_[Background]->attachChild(std::move(backgroundSprite));
+
+		// Finish line
+		sf::Texture&		finishLinetexture = textures_.get(TextureID::FinishLine);
+		finishLinetexture.setRepeated(false);
+		sf::IntRect			textureRect2(0.f, 0.f, worldView_.getSize().x, 50.f);
+
+		std::unique_ptr<SpriteNode>	finishLineSprite(new SpriteNode(finishLinetexture, textureRect2));
+
+		finishLineSprite->setPosition(worldBounds_.top, worldBounds_.top);
+		finishLine_ = finishLineSprite.get();
+		sceneLayers_[LowerAir]->attachChild(std::move(finishLineSprite));
 
 		//add player aircraft & game objects
 		std::unique_ptr<Aircraft> leader(new Aircraft(AircraftType::Eagle, textures_));

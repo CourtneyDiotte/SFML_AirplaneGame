@@ -71,7 +71,7 @@ namespace GEX {
 
 	bool GameOverState::update(sf::Time dt)
 	{
-		const int YOU_LOST_TEXT_TIMER = 3;
+		const float YOU_LOST_TEXT_TIMER = 3.f;
 		elapsedTime_ += dt;
 		if (elapsedTime_ > sf::seconds(YOU_LOST_TEXT_TIMER))
 		{

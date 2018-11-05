@@ -54,7 +54,7 @@ namespace GEX {
 
 		statisticsText_.setFont(font_);
 		statisticsText_.setPosition(0.0f, 0.0f);
-		statisticsText_.setCharacterSize(15.0f);
+		statisticsText_.setCharacterSize(15.f);
 		statisticsText_.setString("Frames / Second = \nTime / Update =");
 	}
 

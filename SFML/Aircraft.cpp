@@ -252,16 +252,16 @@ namespace GEX {
 		switch (fireSpreadLevel_)
 		{
 		case 1:
-			createProjectile(node, type, 0.f, 0.5, textures);
+			createProjectile(node, type, 0.f, 0.5f, textures);
 			break;
 		case 2:
-			createProjectile(node, type, -0.33, 0.5, textures);
-			createProjectile(node, type, +0.33, 0.5, textures);
+			createProjectile(node, type, -0.33f, 0.5f, textures);
+			createProjectile(node, type, +0.33f, 0.5f, textures);
 			break;
 		case 3:
-			createProjectile(node, type, -0.5, 0.5, textures);
-			createProjectile(node, type, 0.f, 0.5, textures);
-			createProjectile(node, type, +0.5, 0.5, textures);
+			createProjectile(node, type, -0.5f, 0.5f, textures);
+			createProjectile(node, type, 0.f, 0.5f, textures);
+			createProjectile(node, type, +0.5f, 0.5f, textures);
 			break;
 		}
 	}

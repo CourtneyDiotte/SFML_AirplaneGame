@@ -36,9 +36,10 @@
 #include "TextureManager.h"
 #include "Aircraft.h"
 #include "CommandQueue.h"
+#include "BloomEffect.h"
 
 namespace sf {
-	class RenderWindow;
+	class RenderTarget;
 }
 
 namespace GEX 
@@ -47,7 +48,7 @@ namespace GEX
 	{
 	public:
 
-		explicit					World(sf::RenderWindow& window);
+		explicit					World(sf::RenderTarget& outputTarget);
 		void						update(sf::Time dt, CommandQueue& commands);  //update world
 		void						adaptPlayerVelocity(); //adapt player's velocity to be same 
 		void						adaptPlayerPosition();	//adapt player's position to within the screen bounds
@@ -98,7 +99,9 @@ namespace GEX
 
 
 	private:
-		sf::RenderWindow&			window_;
+		sf::RenderTarget&			target_;
+		sf::RenderTexture			sceneTexture_;
+		
 		sf::View					worldView_;
 		TextureManager				textures_;
 		SceneNode					sceneGraph_;
@@ -110,6 +113,8 @@ namespace GEX
 		CommandQueue				commandQueue_;
 		std::vector<SpawnPoint>		enemySpawnPoints_;
 		std::vector<Aircraft*>		activeEnemies_;
+		BloomEffect					bloomEffect_;
+		SpriteNode*					finishLine_;
 	};
 
 }
