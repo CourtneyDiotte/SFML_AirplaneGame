@@ -36,6 +36,7 @@
 #include "StateStack.h"
 #include <SFML/Graphics/Font.hpp>
 #include "CommandQueue.h"
+#include "SoundPlayer.h"
 
 class Application
 {
@@ -65,6 +66,9 @@ private:
 	GEX::PlayerControl    player_;
 	GEX::TextureManager   textures_;
 	GEX::StateStack		  stateStack_;
+	GEX::MusicPlayer      music_;
+	GEX::SoundPlayer      sound_;
+
 
 	sf::Text			  statisticsText_;
 	sf::Time			  statisticsUpdateTime_;

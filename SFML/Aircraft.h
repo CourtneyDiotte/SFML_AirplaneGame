@@ -62,6 +62,8 @@ namespace GEX{
 		void					launchMissile();
 		bool					isAllied() const;
 
+		void					playLocalSound(CommandQueue &commands, SoundEffectID effect);
+
 		void					increaseFireRate();
 		void					increaseFireSpread();
 		void					collectMissiles(unsigned int count);
@@ -109,6 +111,7 @@ namespace GEX{
 		int						missileAmmo_;
 		bool					spawnPickup_;
 		bool					isRollAnimation_;
+		bool					hasPlayedExplosionSound_;
 	};
 }
 

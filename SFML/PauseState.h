@@ -35,6 +35,8 @@ class PauseState : public GEX::State
 {
 public:
 	PauseState(GEX::StateStack& stack, State::Context context);
+
+	~PauseState();
 							//draw pause state
 	void					draw() override;
 							//not updating game

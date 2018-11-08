@@ -27,50 +27,35 @@
 * NBCC Academic Integrity Policy (policy 1111)
 */
 
-#include "State.h"
-#include "StateStack.h"
+#pragma once
+#include <SFML/Audio/Sound.hpp>
+#include <SFML/Audio/SoundBuffer.hpp>
+#include <map>
+#include <list>
+#include "MusicPlayer.h"
+#include <string>
+#include <SFML/System/Vector2.hpp>
 
 namespace GEX {
-
-	State::Context::Context(
-		sf::RenderWindow& window,
-		TextureManager& textures,
-		PlayerControl& player,
-		MusicPlayer& music,
-		SoundPlayer& sound)
-		: window(&window)
-		, textures(&textures)
-		, player(&player)
-		, music(&music)
-		, sound(&sound)
-	{}
-
-	State::State(StateStack & stack, Context context)
-		: stack_(&stack)
-		, context_(context)
-	{}
-
-	State::~State()
-	{}
-
-
-	void State::requestStackPush(StateID stateID)
+	class SoundPlayer
 	{
-		stack_->pushState(stateID);
-	}
-	void State::requestStackPop()
-	{
-		stack_->popState();
-	}
-	void State::requestStackClear()
-	{
-		stack_->clearStates();
-	}
+	public:
+																	SoundPlayer();
+																	~SoundPlayer() = default;
+																	SoundPlayer(const SoundPlayer&) = delete;
+		SoundPlayer&												operator=(const SoundPlayer&) = delete;
+		void														play(SoundEffectID effect);
+		void														play(SoundEffectID effect, sf::Vector2f position);
+		void														removeStoppedSounds();
+		void														setListenerPosition(sf::Vector2f position);
+		sf::Vector2f												getListenerPosition() const;
 
-	State::Context State::getContext() const
-	{
-		return context_;
-	}
+	private:
+		void														loadBuffer(SoundEffectID id, const std::string path);
+	private:
+		std::map<SoundEffectID, std::unique_ptr<sf::SoundBuffer>>	soundBuffers_;
+		std::list<sf::Sound>										sounds_;
+		
+	};
 
-	
 }

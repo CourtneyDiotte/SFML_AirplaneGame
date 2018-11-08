@@ -1,4 +1,4 @@
-/**
+/*
 *
 * @author Courtney Diotte
 *
@@ -27,50 +27,31 @@
 * NBCC Academic Integrity Policy (policy 1111)
 */
 
-#include "State.h"
-#include "StateStack.h"
+#pragma once
+#include <SFML/Audio/Music.hpp>
+#include "ResourceIdentifiers.h"
+#include <map>
+#include <string>
 
 namespace GEX {
-
-	State::Context::Context(
-		sf::RenderWindow& window,
-		TextureManager& textures,
-		PlayerControl& player,
-		MusicPlayer& music,
-		SoundPlayer& sound)
-		: window(&window)
-		, textures(&textures)
-		, player(&player)
-		, music(&music)
-		, sound(&sound)
-	{}
-
-	State::State(StateStack & stack, Context context)
-		: stack_(&stack)
-		, context_(context)
-	{}
-
-	State::~State()
-	{}
-
-
-	void State::requestStackPush(StateID stateID)
+	class MusicPlayer
 	{
-		stack_->pushState(stateID);
-	}
-	void State::requestStackPop()
-	{
-		stack_->popState();
-	}
-	void State::requestStackClear()
-	{
-		stack_->clearStates();
-	}
+	public:
+													MusicPlayer();
+													~MusicPlayer() = default;
+													MusicPlayer(const MusicPlayer&) = delete;
+		MusicPlayer&								operator=(const MusicPlayer&) = delete;
 
-	State::Context State::getContext() const
-	{
-		return context_;
-	}
+		void										play(MusicID theme);
+		void									    setVolume(float volume);
+		void										stop();
+		void										setPaused(bool paused);
 
-	
+	private:
+		sf::Music									music_;
+		std::map<MusicID, std::string>				filenames_;
+		float										volume_;
+
+	};
 }
+

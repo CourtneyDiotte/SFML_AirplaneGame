@@ -27,42 +27,25 @@
 * NBCC Academic Integrity Policy (policy 1111)
 */
 
-#pragma once
-#include <SFML/Graphics.hpp>
-#include "TextureManager.h"
-#include "World.h"
-#include "PlayerControl.h"
-#include "Command.h"
-
-//not using this class at the moment
+#include "SoundNode.h"
 
 namespace GEX {
-	class Game
+
+
+	SoundNode::SoundNode(SoundPlayer & player)
+		: SceneNode()
+		, sounds_(player)
 	{
-	public:
-		Game();
-		~Game();
-
-		void run();
+	}
 
 
-	private:
-		void				processInput();
-		void				update(sf::Time deltaTime, CommandQueue& commands);
-		void				render();
-		void				updateStatistics(sf::Time deltaTime);
+	void SoundNode::playSound(SoundEffectID sound, sf::Vector2f position)
+	{
+		sounds_.play(sound, position);
+	}
 
-		
-
-	private:
-		sf::RenderWindow	window_;
-		World				world_;
-		PlayerControl		player_;
-		sf::Text			statisticsText_;
-		sf::Time			statisticsUpdateTime_;
-		sf::Font			font_;
-		unsigned int		statisticsNumFrames_;
-
-		
-	};
+	unsigned int SoundNode::getCategory() const
+	{
+		return Category::Type::SoundEffect;
+	}
 }

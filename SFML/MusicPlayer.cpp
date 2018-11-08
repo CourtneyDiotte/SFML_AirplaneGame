@@ -1,4 +1,4 @@
-/**
+/*
 *
 * @author Courtney Diotte
 *
@@ -27,50 +27,54 @@
 * NBCC Academic Integrity Policy (policy 1111)
 */
 
-#include "State.h"
-#include "StateStack.h"
+#include "MusicPlayer.h"
+
 
 namespace GEX {
-
-	State::Context::Context(
-		sf::RenderWindow& window,
-		TextureManager& textures,
-		PlayerControl& player,
-		MusicPlayer& music,
-		SoundPlayer& sound)
-		: window(&window)
-		, textures(&textures)
-		, player(&player)
-		, music(&music)
-		, sound(&sound)
-	{}
-
-	State::State(StateStack & stack, Context context)
-		: stack_(&stack)
-		, context_(context)
-	{}
-
-	State::~State()
-	{}
-
-
-	void State::requestStackPush(StateID stateID)
+	MusicPlayer::MusicPlayer()
+		: music_()
+	 	, filenames_()
+		, volume_(10)
 	{
-		stack_->pushState(stateID);
-	}
-	void State::requestStackPop()
-	{
-		stack_->popState();
-	}
-	void State::requestStackClear()
-	{
-		stack_->clearStates();
+		filenames_[MusicID::MissionTheme] = "Media/Music/MissionTheme.ogg";
+		filenames_[MusicID::MenuTheme] = "Media/Music/MenuTheme.ogg";
 	}
 
-	State::Context State::getContext() const
+	void MusicPlayer::play(MusicID theme)
 	{
-		return context_;
+		if (!music_.openFromFile(filenames_[theme]))
+		{
+			throw std::runtime_error("Music could not open file");
+		}
+		else
+		{
+			music_.setLoop(true);
+			music_.play();
+		}
 	}
 
-	
+	void MusicPlayer::setVolume(float volume)
+	{
+		volume_ = volume;
+		music_.setVolume(volume);
+	}
+
+	void MusicPlayer::stop()
+	{
+		music_.stop();
+	}
+
+	void MusicPlayer::setPaused(bool paused)
+	{
+		if (paused)
+		{
+			music_.pause();
+		}
+		else
+		{
+			music_.play();
+		}
+	}
+
+
 }

@@ -34,12 +34,14 @@
 #include <SFML/Graphics.hpp>
 #include "StateIdentifiers.h"
 #include "CommandQueue.h"
+#include "MusicPlayer.h"
 
 namespace GEX {
 
 	//forward declaration
 	class StateStack;
 	class PlayerControl;
+	class SoundPlayer;
 
 	class State
 	{
@@ -52,12 +54,16 @@ namespace GEX {
 			Context(
 				sf::RenderWindow& window,
 				TextureManager& textures,
-				PlayerControl& player);
+				PlayerControl& player,
+				MusicPlayer& music,
+				SoundPlayer& sound);
 
 
 			sf::RenderWindow*   window;
 			TextureManager*		textures;
 			PlayerControl*		player;
+			MusicPlayer*		music;
+			SoundPlayer*		sound;
 		};
 
 	public:

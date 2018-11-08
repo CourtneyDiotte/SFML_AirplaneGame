@@ -37,6 +37,7 @@
 #include "Aircraft.h"
 #include "CommandQueue.h"
 #include "BloomEffect.h"
+#include "SoundPlayer.h"
 
 namespace sf {
 	class RenderTarget;
@@ -48,7 +49,7 @@ namespace GEX
 	{
 	public:
 
-		explicit					World(sf::RenderTarget& outputTarget);
+		explicit					World(sf::RenderTarget& outputTarget, SoundPlayer& sounds);
 		void						update(sf::Time dt, CommandQueue& commands);  //update world
 		void						adaptPlayerVelocity(); //adapt player's velocity to be same 
 		void						adaptPlayerPosition();	//adapt player's position to within the screen bounds
@@ -59,6 +60,7 @@ namespace GEX
 		bool						hasAlivePlayer() const;
 		bool						hasPlayerReachedEnd() const;
 		void						destroyOutOfViewEntities();
+		void						updateSounds();
 
 	private:
 		void						loadTextures();  //load textures 
@@ -115,6 +117,7 @@ namespace GEX
 		std::vector<Aircraft*>		activeEnemies_;
 		BloomEffect					bloomEffect_;
 		SpriteNode*					finishLine_;
+		SoundPlayer&				sounds_;
 	};
 
 }

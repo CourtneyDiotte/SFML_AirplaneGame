@@ -51,8 +51,24 @@ namespace GEX {
 		FinishLine,
 	};
 
+	enum class SoundEffectID {
+		AlliedGunFire,
+		EnemyGunFire,
+		Explosion1,
+		Explosion2,
+		LaunchMissile,
+		CollectPickup,
+		Button,
+	};
+
 
 	enum class FontID {
 		Main
+	};
+
+	enum class MusicID {
+		MenuTheme,
+		MissionTheme,
+
 	};
 }
